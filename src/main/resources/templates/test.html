@@ -1,32 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <script src = "https://d3js.org/d3.v4.min.js"></script>
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width,height=device-height ,initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/chartjs/2.9.3/Chart.min.css">
+
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/webjars/chartjs/2.9.3/Chart.bundle.min.js"></script>
+    <script src="/webjars/bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/utilities.js}"></script>
+
+    <title>Shahkar Dashboard</title>
 </head>
+
 <body>
-<div class="legend">SVG circle with animation - to see it again, refresh the browser:</div>
-<div id="bogo_animation"></div>
-<script type="text/javascript">
-    var bogoSVG = d3.select("#bogo_animation")
-        .append("svg")
-        .attr("width", 300)
-        .attr("height", 300);
-
-    bogoSVG.append("circle")
-        .style("stroke", "white")
-        .style("fill", "purple")
-        .attr("r", 130)
-        .attr("cx", 150)
-        .attr("cy", 150)
-        .transition()
-        .delay(100)
-        .duration(10000)
-        .attr("r", 10)
-        .attr("cx", 150)
-        .style("fill", "pink");
-
-</script>
+    <nav class="navbar sticky-top navbar-light navbar-expand" style="background-color:#ffc30f;">
+            <a class="navbar-brand" href="#">
+                <img th:src="@{/mtn-irancell.svg}" class="d-inline-block align-self-center" style="height: 100px ; width: 100px">
+            </a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/dashboard}">
+                    Dashboard
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid container-lg" style="background-color: #fefefe;">
+        <div class="row ">
+            <!--<div class="col col-md-6 border shadow">-->
+            <div class="col border shadow">
+                <label for="StatsDate">Daily Statisctics Date</label>
+                <input type="date" id="StatsDate" name="StatsDate">
+                <div>
+                    <canvas id="daily"></canvas>
+                </div>
+            </div>
+            <!--<div class="col col-md-6 border shadow">-->
+                <!--<label for="MonthlyStats">Monthly Statisctics Date</label>-->
+                <!--<input type="date" id="MonthlyStats" name="MonthlyStats">-->
+                <!--<div>-->
+                    <!--<canvas id="monthly"></canvas>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <!--<footer class="fixed-bottom" style="background-color: #4c4c4c; min-height: 50px ; max-height: 15%">-->
+        <!--<a class="align-self-center justify-content-center" href="#"></a>-->
+    <!--</footer>-->
+    <script>
+        window.onload = new function (e) {
+            setTodayDateISO('#StatsDate');
+            // setTodayDateISO('#MonthlyStats');
+            getDailyStatsAndDraw('#StatsDate','daily');
+            // getDailyStatsAndDraw('#MonthlyStats','monthly');
+        };
+    </script>
 </body>
+
 </html>

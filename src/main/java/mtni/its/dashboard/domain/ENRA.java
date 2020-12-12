@@ -5,13 +5,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-public class ENRSH extends ReportRecord {
+public class ENRA  extends ReportRecord{
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private long id;
-//    @Version
-//    private long version;
     @Column
     private String msisdn_nsk;
     @Column
@@ -41,34 +36,13 @@ public class ENRSH extends ReportRecord {
     @Column
     private String chanel_nam;
 
-    /**
-     * Default constructor
-     */
-    public ENRSH() {}
+    public ENRA() {}
 
-    /**
-     * Parametrized constructor
-     *
-     * @param msisdn_nsk
-     * @param account_link_code_n
-     * @param cra_ref_num_v
-     * @param shahkar_id
-     * @param status_code_v
-     * @param contract_type_v
-     * @param profile_type_v
-     * @param dms_verified_flag_v
-     * @param sim_category_code_v
-     * @param registration_date
-     * @param id_type_v
-     * @param registration_by
-     * @param user_code_n
-     * @param chanel_nam
-     * @param reportDate Date that this record was captured on Network
-     */
-    public ENRSH(String msisdn_nsk, String account_link_code_n, String cra_ref_num_v,
-                 String shahkar_id, String status_code_v, String contract_type_v, String profile_type_v,
-                 String dms_verified_flag_v, String sim_category_code_v, String registration_date,
-                 String id_type_v, String registration_by, String user_code_n, String chanel_nam , LocalDate reportDate) {
+    public ENRA(String msisdn_nsk, String account_link_code_n, String cra_ref_num_v,
+                String shahkar_id, String status_code_v, String contract_type_v,
+                String profile_type_v, String dms_verified_flag_v, String sim_category_code_v,
+                String registration_date, String id_type_v, String registration_by, String user_code_n,
+                String chanel_nam, LocalDate reportDate) {
         this.msisdn_nsk = msisdn_nsk;
         this.account_link_code_n = account_link_code_n;
         this.cra_ref_num_v = cra_ref_num_v;
@@ -85,9 +59,6 @@ public class ENRSH extends ReportRecord {
         this.chanel_nam = chanel_nam;
         this.reportDate = reportDate;
     }
-
-
-    // ******************************************************************
 
     public String getMsisdn_nsk() {
         return msisdn_nsk;
@@ -203,7 +174,7 @@ public class ENRSH extends ReportRecord {
 
     @Override
     public String toString() {
-        return "ENRSH{" +
+        return "ENRA{" +
                 "msisdn_nsk='" + msisdn_nsk + '\'' +
                 ", account_link_code_n='" + account_link_code_n + '\'' +
                 ", cra_ref_num_v='" + cra_ref_num_v + '\'' +
@@ -227,23 +198,23 @@ public class ENRSH extends ReportRecord {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ENRSH)) return false;
-        ENRSH enrsh = (ENRSH) o;
-        return Objects.equals(msisdn_nsk, enrsh.msisdn_nsk) &&
-                Objects.equals(account_link_code_n, enrsh.account_link_code_n) &&
-                Objects.equals(cra_ref_num_v, enrsh.cra_ref_num_v) &&
-                Objects.equals(shahkar_id, enrsh.shahkar_id) &&
-                Objects.equals(status_code_v, enrsh.status_code_v) &&
-                Objects.equals(contract_type_v, enrsh.contract_type_v) &&
-                Objects.equals(profile_type_v, enrsh.profile_type_v) &&
-                Objects.equals(dms_verified_flag_v, enrsh.dms_verified_flag_v) &&
-                Objects.equals(sim_category_code_v, enrsh.sim_category_code_v) &&
-                Objects.equals(registration_date, enrsh.registration_date) &&
-                Objects.equals(id_type_v, enrsh.id_type_v) &&
-                Objects.equals(registration_by, enrsh.registration_by) &&
-                Objects.equals(user_code_n, enrsh.user_code_n) &&
-                Objects.equals(chanel_nam, enrsh.chanel_nam) &&
-                Objects.equals(reportDate , enrsh.reportDate);
+        if (!(o instanceof ENRA)) return false;
+        ENRA enra = (ENRA) o;
+        return Objects.equals(msisdn_nsk, enra.msisdn_nsk) &&
+                Objects.equals(account_link_code_n, enra.account_link_code_n) &&
+                Objects.equals(cra_ref_num_v, enra.cra_ref_num_v) &&
+                Objects.equals(shahkar_id, enra.shahkar_id) &&
+                Objects.equals(status_code_v, enra.status_code_v) &&
+                Objects.equals(contract_type_v, enra.contract_type_v) &&
+                Objects.equals(profile_type_v, enra.profile_type_v) &&
+                Objects.equals(dms_verified_flag_v, enra.dms_verified_flag_v) &&
+                Objects.equals(sim_category_code_v, enra.sim_category_code_v) &&
+                Objects.equals(registration_date, enra.registration_date) &&
+                Objects.equals(id_type_v, enra.id_type_v) &&
+                Objects.equals(registration_by, enra.registration_by) &&
+                Objects.equals(user_code_n, enra.user_code_n) &&
+                Objects.equals(chanel_nam, enra.chanel_nam) &&
+                Objects.equals(reportDate , enra.reportDate);
     }
 
     @Override
@@ -252,4 +223,3 @@ public class ENRSH extends ReportRecord {
         return Objects.hash(msisdn_nsk, account_link_code_n, cra_ref_num_v, shahkar_id, status_code_v, contract_type_v, profile_type_v, dms_verified_flag_v, sim_category_code_v, registration_date, id_type_v, registration_by, user_code_n, chanel_nam , reportDate);
     }
 }
-
