@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,height=device-height ,initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="/webjars/chartjs/2.9.3/Chart.min.css">
@@ -17,30 +17,37 @@
     <title>Shahkar Dashboard</title>
 </head>
 
-<body>
-    <nav class="navbar sticky-top navbar-light navbar-expand" style="background-color:#ffc30f;">
-            <a class="navbar-brand" href="#">
-                <img th:src="@{/mtn-irancell.svg}" class="d-inline-block align-self-center" style="height: 100px ; width: 100px">
+<!--<body style="min-height: 100vh;">-->
+<body style="background-color: #fdfdfd">
+    <nav class="navbar sticky-top navbar-light navbar-expand" style="background-color:#ffcc00;">
+    <!--<nav class="navbar navbar-light navbar-expand" style="background-color:#ffc30f;top: 0">-->
+            <a class="navbar-brand" th:href="@{/dashboard}">
+                <img th:src="@{/mtn-irancell.svg}" class="d-inline-block align-self-center" style="height: 80px ; width: 80px">
+                Shahkar Mismatch Dashboard
             </a>
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" th:href="@{/dashboard}">
-                    Dashboard
-                </a>
-            </li>
-        </ul>
+        <!--<ul class="navbar-nav mr-auto">-->
+            <!--<li class="nav-item active">-->
+                <!--<a class="nav-link" th:href="@{/dashboard}">-->
+                    <!--Shahkar Mismatch Dashboard-->
+                <!--</a>-->
+            <!--</li>-->
+        <!--</ul>-->
     </nav>
-    <div class="container-fluid container-lg" style="background-color: #fefefe;">
-        <div class="row ">
-            <!--<div class="col col-md-6 border shadow">-->
-            <div class="col border shadow">
-                <label for="StatsDate">Daily Statisctics Date</label>
+
+    <div class="container-fluid" style="background-color: #fdfdfd;">
+    <!--<div class="container-fluid container-xl" style="background-color: #fefefe;">-->
+
+        <!--<div class="row align-items-center justify-content-center mt-1 mt-lg-5 mx-lg-1 mh-100">-->
+        <div class="row align-items-center justify-content-center my-1  my-lg-5 mx-lg-1 mh-100">
+            <!--<div class="col border shadow">-->
+            <div class="col col-lg-9 border shadow">
+                <!--<label for="StatsDate">Daily Statisctics Date:   </label>-->
                 <input type="date" id="StatsDate" name="StatsDate">
                 <div>
                     <canvas id="daily"></canvas>
                 </div>
             </div>
-            <!--<div class="col col-md-6 border shadow">-->
+            <!--<div class="col col-lg-6 border shadow">-->
                 <!--<label for="MonthlyStats">Monthly Statisctics Date</label>-->
                 <!--<input type="date" id="MonthlyStats" name="MonthlyStats">-->
                 <!--<div>-->
@@ -48,9 +55,47 @@
                 <!--</div>-->
             <!--</div>-->
         </div>
+
+        <!--<div class="row align-items-center justify-content-center mt-lg-3 mx-lg-1">-->
+            <!--&lt;!&ndash;<div class="col col-md-6 border shadow">&ndash;&gt;-->
+            <!--<div class="col col-lg-6 border shadow">-->
+                <!--<label for="StatsDate">Daily Statisctics Date</label>-->
+                <!--<input type="date" id="StatsDate" name="StatsDate">-->
+                <!--<div>-->
+                    <!--<canvas id="daily"></canvas>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col col-lg-6 border shadow">-->
+                <!--<label for="MonthlyStats">Monthly Statisctics Date</label>-->
+                <!--<input type="date" id="MonthlyStats" name="MonthlyStats">-->
+                <!--<div>-->
+                    <!--<canvas id="monthly"></canvas>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="row align-items-center justify-content-center mt-lg-3 mx-lg-1 mb-lg-5 ">-->
+            <!--&lt;!&ndash;<div class="col col-md-6 border shadow">&ndash;&gt;-->
+            <!--<div class="col col-lg-6 border shadow">-->
+                <!--<label for="StatsDate">Daily Statisctics Date</label>-->
+                <!--<input type="date" id="StatsDate" name="StatsDate">-->
+                <!--<div>-->
+                    <!--<canvas id="daily"></canvas>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col col-lg-6 border shadow">-->
+                <!--<label for="MonthlyStats">Monthly Statisctics Date</label>-->
+                <!--<input type="date" id="MonthlyStats" name="MonthlyStats">-->
+                <!--<div>-->
+                    <!--<canvas id="monthly"></canvas>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
     </div>
-    <!--<footer class="fixed-bottom" style="background-color: #4c4c4c; min-height: 50px ; max-height: 15%">-->
-        <!--<a class="align-self-center justify-content-center" href="#"></a>-->
+    <!--<footer class="fixed-bottom justify-content-center" style="background-color: #4c4c4c; min-height: 50px ;">-->
+    <!--&lt;!&ndash;<footer style="background-color: #000000; min-height: 50px ; max-height: 15%">&ndash;&gt;-->
+        <!--<a class="nav-link " href="#">Shahkar Dashboard</a>-->
     <!--</footer>-->
     <script>
         window.onload = new function (e) {

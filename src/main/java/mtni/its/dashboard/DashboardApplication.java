@@ -1,22 +1,13 @@
 package mtni.its.dashboard;
 
-import mtni.its.dashboard.domain.ENRA;
-import mtni.its.dashboard.domain.ENRE;
 import mtni.its.dashboard.service.RepoImpl.ServiceENRA;
-import mtni.its.dashboard.service.RepoImpl.ServiceENRE;
-import mtni.its.dashboard.service.CSVReader;
+import mtni.its.dashboard.service.reportUtils.CSVReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class DashboardApplication {

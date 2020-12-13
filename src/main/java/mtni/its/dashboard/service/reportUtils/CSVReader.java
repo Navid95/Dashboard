@@ -1,10 +1,11 @@
-package mtni.its.dashboard.service;
+package mtni.its.dashboard.service.reportUtils;
 
 import mtni.its.dashboard.domain.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.util.List;
 public class CSVReader {
 
     private static Logger logger = LoggerFactory.getLogger(CSVReader.class);
+
     /**
      *
      * @param file CSV file

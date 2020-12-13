@@ -42,6 +42,7 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
 
             var chartData = [];
             var chartData2 = [];
+
             $.each(stats , function (k , v) {
                 if (k !== "statDate" && k !=='count_EDW_No_RE_ABL') {
                     // if (k !== "statDate" )
@@ -60,35 +61,59 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
                     data: {
                         // labels : lables,
                         datasets: [{
-                            label: "Daily Statistics",
-                            backgroundColor:["red","yellow","green","purple","cyan"],
-                            data: chartData,
-                            // order: 4,
-                            // minBarLength: 5,
+                            label: "Ref ID available on ABL, but SHWG has no Ref ID",
+                            backgroundColor:['rgb(0, 204, 153, 0.5)','rgb(0, 204, 153, 0.5)','rgb(0, 204, 153, 0.5)','rgb(0, 204, 153, 0.5)'],
+                            borderColor:['rgb(0, 179, 134)','rgb(0, 179, 134)','rgb(0, 179, 134)','rgb(0, 179, 134)'],
+                            borderWidth:2,
+                            // fill:false,
+                            data: [chartData[0],0,0,0],
                             yAxisID: 'first-y-axis',
-                            maxBarThickness: 50
+                            maxBarThickness: 120
                             // xAxisID: 'first-x-axis'
+                        },{
+                            label: "Different Ref IDs available on ABL and SHWG",
+                            backgroundColor:["rgb(230, 230, 0, 0.5)","rgb(230, 230, 0, 0.5)","rgb(230, 230, 0, 0.5)","rgb(230, 230, 0, 0.5)"],
+                            borderColor:['rgb(204, 204, 0)','rgb(204, 204, 0)','rgb(204, 204, 0)','rgb(204, 204, 0)'],
+                            borderWidth:2,
+                            data: [0,chartData[1],0,0],
+                            yAxisID: 'first-y-axis',
+                            maxBarThickness: 120
+                        },{
+                            label: "Ref ID available on SHWG, but ABL has no Ref ID",
+                            backgroundColor:["rgb(204, 0, 102, 0.5)","rgb(204, 0, 102, 0.5)","rgb(204, 0, 102, 0.5)","rgb(204, 0, 102, 0.5)"],
+                            borderColor:['rgb(179, 0, 89)','rgb(179, 0, 89)','rgb(179, 0, 89)','rgb(179, 0, 89)'],
+                            borderWidth:2,
+                            data: [0,0,chartData[2],0],
+                            yAxisID: 'first-y-axis',
+                            maxBarThickness: 120
                         }
                         ,{
-                            label: "count_EDW_No_RE_ABL",
-                            backgroundColor:["cyan","yellow","green","cyan","cyan"],
+                            label: "No Ref ID available on ABL and SHWG",
+                            backgroundColor:["rgb(51, 51, 255, 0.5)","rgb(51, 51, 255, 0.5)","rgb(51, 51, 255, 0.5)","rgb(51, 51, 255, 0.5)"],
+                            borderColor:['rgb(26, 26, 255)','rgb(26, 26, 255)','rgb(26, 26, 255)','rgb(26, 26, 255)'],
+                            borderWidth:2,
                             data: chartData2,
-                            // order: 4,
-                            // minBarLength: 5,
                             yAxisID: 'second-y-axis',
-                            // xAxisID: 'second-x-axis',
-                            maxBarThickness: 50
-
+                            maxBarThickness: 120
                             }
                         ]
                     },
                     options: {
+                        tooltips:{
+                            bodyFontSize: 16
+                        },
+                        title:{
+                            display: true,
+                            text: "Daily Statistics",
+                            fontSize: 18
+                        },
                         scales: {
                             yAxes: [{
                                 id: 'first-y-axis',
                                 type: 'linear',
                                 ticks:{
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    fontSize: 16
                                 }
                             }
                             ,{
@@ -96,18 +121,20 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
                                 type: 'linear',
                                 position: 'right',
                                     ticks:{
-                                        beginAtZero: true
+                                        beginAtZero: true,
+                                        stepSize: 5000,
+                                        fontSize: 16
                                     },
                                     gridLines:{
                                         drawOnChartArea: false
-                                    },
+                                    }
                             }
                             ],
                             xAxes:[
                                 {
                                     id: 'first-x-axis',
                                     type: 'category',
-                                    labels: lables
+                                    labels: ["A","B","C","D"]
 
                                 }
                                 // ,{
@@ -158,8 +185,10 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
                         console.log("Updating the daily stats graph\nLabels: "+lables+"\nData: "+chartData);
 
                         // chart.data.labels = lables;
-                        chart.data.datasets[0].data = chartData;
-                        chart.data.datasets[1].data = chartData2;
+                        chart.data.datasets[0].data = [chartData[0],0,0,0];
+                        chart.data.datasets[1].data = [0,chartData[1],0,0];
+                        chart.data.datasets[2].data = [0,0,chartData[2],0];
+                        chart.data.datasets[3].data = chartData2;
                         chart.update();
                     },
                     error: function (jqXHR, status) {
