@@ -57,4 +57,15 @@ public class DailyStats {
     }
 
     public void setStatDate(LocalDate statDate) { this.statDate = statDate; }
+
+    @Override
+    public String toString() {
+        return "DailyStats{" +
+                "count_EDW_No_RE_SHWG=" + count_EDW_No_RE_SHWG +
+                ", count_EDW_ABL_SHWG_DIF=" + count_EDW_ABL_SHWG_DIF +
+                ", count_EDW_NO_MSISDN_ABLT_and_EDW_No_RE_ER=" + count_EDW_NO_MSISDN_ABLT_and_EDW_No_RE_ER +
+                ", count_EDW_No_RE_ABL=" + count_EDW_No_RE_ABL +
+                ", statDate=" + statDate +
+                '}';
+    }
 }

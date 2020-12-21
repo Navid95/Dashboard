@@ -1,24 +1,16 @@
 package mtni.its.dashboard.controller;
 
 import mtni.its.dashboard.domain.stats.DailyStats;
-import mtni.its.dashboard.service.RepoImpl.*;
 import mtni.its.dashboard.service.Stats.Stats;
-import mtni.its.dashboard.service.reportUtils.CSVReader;
-import mtni.its.dashboard.service.reportUtils.ReportUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/dashboard")
@@ -26,8 +18,8 @@ public class DashboardController {
 
     private static Logger logger = LoggerFactory.getLogger(DashboardController.class);
     private Stats stats;
-    private ReportUtilities reportUtilities;
-
+//    private ReportUtilities reportUtilities;
+//
 //    @Autowired
 //    private ServiceEASHD serviceEASHD;
 //
@@ -46,10 +38,10 @@ public class DashboardController {
 //    @Autowired
 //    private CSVReader csvReader;
 
-    @Autowired
-    public void setReportUtilities(ReportUtilities reportUtilities) {
-        this.reportUtilities = reportUtilities;
-    }
+//    @Autowired
+//    public void setReportUtilities(ReportUtilities reportUtilities) {
+//        this.reportUtilities = reportUtilities;
+//    }
 
     @Autowired
     public void setStats(Stats stats) {
@@ -59,16 +51,33 @@ public class DashboardController {
     @PostMapping(value = "/stats/daily")
     @ResponseBody
     public DailyStats getDailyStats(@RequestBody LocalDate date) {
-        logger.error("provided date: "+date);
-        logger.warn("provided date: "+date);
-        logger.info("provided date: "+date);
+        logger.info("Request for daily Stats: "+date);
         return stats.getDailyStatsByDate(date);
     }
 
-    @GetMapping("/load")
+    @PostMapping(value = "/stats/dailyFromTo")
     @ResponseBody
-    public String LoadFile() throws IOException {
-        reportUtilities.loadFromTempFiles();
-        return "true";
+    public List<DailyStats> getDailyStatsFromTo(@RequestBody LocalDate[] dates){
+        try {
+            logger.info("Request for daily stats from "+dates[0]+" to "+ dates[1]);
+            return stats.getDailyStatsFromTo(dates[0] , dates[1]);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
+    @RequestMapping("")
+    public String dashboard(){
+        return "test";
+    }
+//
+//    @PostMapping("/load")
+//    public void LoadFile(@RequestBody Multi file) throws IOException {
+//        Map map = reportUtilities.extractReportInfo(file);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//        if(map.containsKey("EDW_ABL_SHWG_DIF_")){
+//            serviceEASHD.saveAll(csvReader.read_EASHD_File(file , LocalDate.parse((CharSequence) map.get("EDW_ABL_SHWG_DIF_"),formatter)));
+//        }
+//    }
 }

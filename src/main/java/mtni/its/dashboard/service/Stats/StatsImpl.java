@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class StatsImpl implements Stats {
@@ -53,5 +58,22 @@ public class StatsImpl implements Stats {
         dailyStats.setCount_EDW_NO_MSISDN_ABLT_and_EDW_No_RE_ER(enma.countAllByReportDate(date) + enre.countAllByReportDate(date));
         dailyStats.setStatDate(date);
         return dailyStats;
+    }
+
+    @Override
+    public List<DailyStats> getDailyStatsFromTo(LocalDate from, LocalDate to) throws Exception {
+        if (from.isAfter(to)){
+            throw new Exception();
+        }
+        long numOfDaysBetween = ChronoUnit.DAYS.between(from, to);
+        List<LocalDate> dates = IntStream.iterate(0, i -> i + 1)
+                .limit(numOfDaysBetween +1)
+                .mapToObj(i -> from.plusDays(i))
+                .collect(Collectors.toList());
+        List<DailyStats> dailyStatsList = new ArrayList<>();
+        dates.forEach(date -> {
+            dailyStatsList.add(getDailyStatsByDate(date));
+        });
+        return dailyStatsList;
     }
 }

@@ -45,5 +45,4 @@ public class ENRAController {
     public int countAllBetween(@RequestBody List<LocalDate> dates){
         return serviceENRA.countAllBetween(dates.get(0) , dates.get(1));
     }
-
 }
