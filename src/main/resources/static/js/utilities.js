@@ -6,6 +6,11 @@ var eashdBorderColor= 'rgb(204, 204, 0)';
 var eashdBackgroundColor = 'rgb(230, 230, 0, 0.5)';
 var enmaAndenreBorderColor= 'rgb(179, 0, 89)';
 var enmaAndenreBackgroundColor = 'rgb(204, 0, 102, 0.5)';
+var enrshDescription = "Ref ID available on ABL, but SHWG has no Ref ID";
+var enmaAndenreDescription = "Ref ID available on SHWG, but ABL has no Ref ID";
+var eashdDescription = "Different Ref IDs available on ABL and SHWG";
+var enraDescription = "No Ref ID available on ABL and SHWG";
+var noReportThreshold = 0;
 //******************************************************************************************
 function setTodayDateISO(id) {
     var today = new Date().toISOString().split("T")[0];
@@ -25,16 +30,15 @@ function setYesterdayDateISO(id) {
     $(id).val(yesterday);
 }
 //******************************************************************************************
-function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID){
-    var chart;
+function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID , chartID2){
+    var chart , chart2;
     var chartCTX = document.getElementById(chartID).getContext('2d');
+    var chartCTX2 = document.getElementById(chartID2).getContext('2d');
     var from = getDatePickerDateISO(datePicker1);
     var to = getDatePickerDateISO(datePicker2);
     var dates = new Array();
-    // dates[0] = from;
-    // dates[1] = to;
-    dates[0] = "2020-12-04";
-    dates[1] = "2020-12-12";
+    dates[0] = from;
+    dates[1] = to;
     $.ajax({
         type: "POST",
         url: "/dashboard/stats/dailyFromTo",
@@ -47,6 +51,7 @@ function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID){
             console.log(data);
             var enrsh = new Array(), eashd= new Array(), enmaAndenre= new Array(), enra= new Array();
             var chartLabels = new Array();
+            var chartLabels2 = new Array();
             $.each(data , function (k, v) {
                 $.each(v , function (k2, v2) {
                     if(k2 ==='count_EDW_No_RE_SHWG')
@@ -67,43 +72,81 @@ function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID){
                 type: "line",
                 data: {
                     datasets: [{
-                        label: 'enrsh',
-                        borderColor: enrshBorderColor,
-                        backgroundColor: enrshBackgroundColor,
+                        label: enrshDescription,
+                        borderColor: function (context) {
+                            if (context.dataset.data[context.dataIndex] === noReportThreshold){
+                                return 'rgb(255 , 0 , 0)';
+                            } else {
+                                return enrshBorderColor;
+                            }
+                        },
+                        backgroundColor: function (context) {
+                            if (context.dataset.data[context.dataIndex] === noReportThreshold){
+                                return 'rgb(255 , 0 , 0)';
+                            } else {
+                                return enrshBackgroundColor;
+                            }
+                        },
                         data: enrsh,
                         yAxisID: 'first-Y',
                         xAxisID: 'first-X',
-                        fill: false
+                        fill: false,
+                        pointStyle:'circle'
                     }
                     ,{
-                            label: 'enmaAndenre',
-                            borderColor: enmaAndenreBorderColor,
-                            backgroundColor: enmaAndenreBackgroundColor,
+                            label: enmaAndenreDescription,
+                            borderColor: function (context) {
+                                if (context.dataset.data[context.dataIndex] === noReportThreshold){
+                                    return 'rgb(255 , 0 , 0)';
+                                } else {
+                                    return enmaAndenreBorderColor;
+                                }
+                            },
+                            backgroundColor: function (context) {
+                                if (context.dataset.data[context.dataIndex] === noReportThreshold){
+                                    return 'rgb(255 , 0 , 0)';
+                                } else {
+                                    return enmaAndenreBackgroundColor;
+                                }
+                            },
                             data: enmaAndenre,
                             yAxisID: 'first-Y',
                             xAxisID: 'first-X',
-                            fill: false
+                            fill: false,
+                            pointStyle: 'triangle'
                         }
                         ,{
-                            label: 'eashd',
-                            borderColor: eashdBorderColor,
-                            backgroundColor: eashdBackgroundColor,
+                            label: eashdDescription,
+                            borderColor: function (context) {
+                                if (context.dataset.data[context.dataIndex] === noReportThreshold){
+                                    return 'rgb(255 , 0 , 0)';
+                                } else {
+                                    return eashdBorderColor;
+                                }
+                            },
+                            backgroundColor: function (context) {
+                                if (context.dataset.data[context.dataIndex] === noReportThreshold){
+                                    return 'rgb(255 , 0 , 0)';
+                                } else {
+                                    return eashdBackgroundColor;
+                                }
+                            },
                             data: eashd,
                             yAxisID: 'first-Y',
                             xAxisID: 'first-X',
-                            fill: false
-                        }
-                    ,{
-                            label: 'enra',
-                            borderColor: enraBorderColor,
-                            backgroundColor: enraBackgroundColor,
-                            data: enra,
-                            yAxisID: 'second-Y',
-                            xAxisID: 'first-X',
-                            fill: false
-                    }]
+                            fill: false,
+                            pointStyle: 'star'
+                        }]
                 },
                 options:{
+                    tooltips:{
+                        bodyFontSize: 16
+                    },
+                    title:{
+                        display: true,
+                        text: "Weekly/Monthly Statistics",
+                        fontSize: 18
+                    },
                     elements: {
                         line: {
                             cubicInterpolationMode: 'monotone'
@@ -117,20 +160,7 @@ function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID){
                             ticks:{
                                 beginAtZero: true
                             }
-                        },
-                            {
-                                id: 'second-Y',
-                                type: 'linear',
-                                position: 'right',
-                                ticks:{
-                                    beginAtZero: true,
-                                    stepSize: 10000
-                                    // fontSize: 16
-                                },
-                                gridLines:{
-                                    drawOnChartArea: false
-                                }
-                            }],
+                        }],
                         xAxes: [{
                             id: 'first-X',
                             labels: chartLabels
@@ -138,7 +168,63 @@ function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID){
                     }
                 }
             });
-
+            chart2 = new Chart(chartCTX2,{
+                type: "line",
+                data:{
+                    datasets:[{
+                        label: enraDescription,
+                        borderColor: function (context) {
+                            if (context.dataset.data[context.dataIndex] === noReportThreshold){
+                                return 'rgb(255 , 0 , 0)';
+                            } else {
+                                return enraBorderColor;
+                            }
+                        },
+                        backgroundColor: function (context) {
+                            if (context.dataset.data[context.dataIndex] === noReportThreshold){
+                                return 'rgb(255 , 0 , 0)';
+                            } else {
+                                return enraBackgroundColor;
+                            }
+                        },
+                        data: enra,
+                        yAxisID: 'first-Y',
+                        xAxisID: 'first-X',
+                        fill: true,
+                        spanGaps: false,
+                        pointStyle: 'rect'
+                    }
+                ]},
+                options:{
+                    tooltips:{
+                        bodyFontSize: 16
+                    },
+                    title:{
+                        display: true,
+                        text: "Weekly/Monthly Statistics: "+enraDescription,
+                        fontSize: 18
+                    },
+                    elements: {
+                        line: {
+                            cubicInterpolationMode: 'monotone'
+                        }
+                    },
+                    scales: {
+                        yAxes:[{
+                            id: 'first-Y',
+                            type: 'linear',
+                            position: 'right',
+                            ticks:{
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            id: 'first-X',
+                            labels: chartLabels
+                        }]
+                    }
+                }
+            });
             $(datePicker1).change(function () {
                 dates[0] = getDatePickerDateISO(datePicker1);
                 $.ajax({
@@ -150,8 +236,8 @@ function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID){
                     dataType: "json",
 
                     success: function (data1, status, jqXHR) {
-                        console.log(status);
-                        console.log(data1);
+                        // console.log(status);
+                        // console.log(data1);
                         enrsh = new Array(), eashd= new Array(), enmaAndenre= new Array(), enra= new Array();
                         chartLabels = new Array();
                         $.each(data1 , function (k, v) {
@@ -172,9 +258,11 @@ function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID){
                         chart.data.datasets[0].data = enrsh;
                         chart.data.datasets[1].data = enmaAndenre;
                         chart.data.datasets[2].data = eashd;
-                        chart.data.datasets[3].data = enra;
+                        chart2.data.datasets[0].data = enra;
                         chart.options.scales.xAxes[0].labels = chartLabels;
+                        chart2.options.scales.xAxes[0].labels = chartLabels;
                         chart.update();
+                        chart2.update();
                     }
                 });
             });
@@ -211,9 +299,11 @@ function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID){
                         chart.data.datasets[0].data = enrsh;
                         chart.data.datasets[1].data = enmaAndenre;
                         chart.data.datasets[2].data = eashd;
-                        chart.data.datasets[3].data = enra;
+                        chart2.data.datasets[0].data = enra;
                         chart.options.scales.xAxes[0].labels = chartLabels;
+                        chart2.options.scales.xAxes[0].labels = chartLabels;
                         chart.update();
+                        chart2.update();
                     }
                 });
             });
@@ -222,9 +312,10 @@ function getDailyStatsFromTo(datePicker1 , datePicker2 , chartID){
     });
 }
 //******************************************************************************************
-function getDailyStatsAndDraw(datePickerID , chartID ) {
-    var chart;
+function getDailyStatsAndDraw(datePickerID , chartID , chartID2) {
+    var chart , chart2;
     var chartJsCTX = document.getElementById(chartID).getContext('2d');
+    var chartJsCTX2 = document.getElementById(chartID2).getContext('2d');
     var statDate = getDatePickerDateISO(datePickerID);
     $.ajax({
         type: "POST",
@@ -235,24 +326,16 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
         dataType: "json",
         success: function (data, status, jqXHR) {
             var stats = data;
-
             var lables = [];
-            var label2 =[];
             $.each(stats , function (k , v) {
-                // if (k !== "statDate" && k !=='count_EDW_No_RE_ABL')
                 if (k !== "statDate" )
                     lables.push(k.toString());
-                    // else if(k ==='count_EDW_No_RE_ABL')
-                    //     label2.push(k.toString());
             });
-
             var chartData = [];
             var chartData2 = [];
 
             $.each(stats , function (k , v) {
                 if (k !== "statDate" && k !=='count_EDW_No_RE_ABL') {
-                    // if (k !== "statDate" )
-                    chartData2.push(0);
                     chartData.push(v);
                 }
                 else if(k ==='count_EDW_No_RE_ABL'){
@@ -261,21 +344,19 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
             });
 
                 console.log("First Draw of Graph\nLabels: "+lables+"\nData: "+chartData);
+                console.log("First Draw of Graph\nLabels: "+lables+"\nData2: "+chartData2);
 
                 chart = new Chart(chartJsCTX , {
                     type: 'bar',
                     data: {
-                        // labels : lables,
                         datasets: [{
                             label: "Ref ID available on ABL, but SHWG has no Ref ID",
                             backgroundColor:['rgb(0, 204, 153, 0.5)','rgb(0, 204, 153, 0.5)','rgb(0, 204, 153, 0.5)','rgb(0, 204, 153, 0.5)'],
                             borderColor:['rgb(0, 179, 134)','rgb(0, 179, 134)','rgb(0, 179, 134)','rgb(0, 179, 134)'],
                             borderWidth:2,
-                            // fill:false,
                             data: [chartData[0],0,0,0],
                             yAxisID: 'first-y-axis',
-                            maxBarThickness: 120
-                            // xAxisID: 'first-x-axis'
+                            maxBarThickness: 100
                         },{
                             label: "Different Ref IDs available on ABL and SHWG",
                             backgroundColor:["rgb(230, 230, 0, 0.5)","rgb(230, 230, 0, 0.5)","rgb(230, 230, 0, 0.5)","rgb(230, 230, 0, 0.5)"],
@@ -283,7 +364,7 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
                             borderWidth:2,
                             data: [0,chartData[1],0,0],
                             yAxisID: 'first-y-axis',
-                            maxBarThickness: 120
+                            maxBarThickness: 100
                         },{
                             label: "Ref ID available on SHWG, but ABL has no Ref ID",
                             backgroundColor:["rgb(204, 0, 102, 0.5)","rgb(204, 0, 102, 0.5)","rgb(204, 0, 102, 0.5)","rgb(204, 0, 102, 0.5)"],
@@ -291,18 +372,8 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
                             borderWidth:2,
                             data: [0,0,chartData[2],0],
                             yAxisID: 'first-y-axis',
-                            maxBarThickness: 120
-                        }
-                        ,{
-                            label: "No Ref ID available on ABL and SHWG",
-                            backgroundColor:["rgb(51, 51, 255, 0.5)","rgb(51, 51, 255, 0.5)","rgb(51, 51, 255, 0.5)","rgb(51, 51, 255, 0.5)"],
-                            borderColor:['rgb(26, 26, 255)','rgb(26, 26, 255)','rgb(26, 26, 255)','rgb(26, 26, 255)'],
-                            borderWidth:2,
-                            data: chartData2,
-                            yAxisID: 'second-y-axis',
-                            maxBarThickness: 120
-                            }
-                        ]
+                            maxBarThickness: 100
+                        }]
                     },
                     options: {
                         tooltips:{
@@ -322,34 +393,55 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
                                     fontSize: 16
                                 }
                             }
-                            ,{
-                                id: 'second-y-axis',
-                                type: 'linear',
-                                position: 'right',
-                                    ticks:{
-                                        beginAtZero: true,
-                                        stepSize: 10000,
-                                        fontSize: 16
-                                    },
-                                    gridLines:{
-                                        drawOnChartArea: false
-                                    }
-                            }
                             ],
                             xAxes:[
                                 {
                                     id: 'first-x-axis',
                                     type: 'category',
-                                    labels: ["A","B","C","D"]
-
+                                    labels: ["A","B","C"]
                                 }
-                                // ,{
-                                //     id: 'second-x-axis',
-                                //     type: 'category',
-                                //     position: 'top',
-                                //     labels: label2
-                                // }
                             ]
+                        }
+                    }
+                });
+                chart2 = new Chart(chartJsCTX2 , {
+                    type: 'bar',
+                    data: {
+                        datasets: [{
+                            label: "No Ref ID available on ABL and SHWG",
+                            backgroundColor:["rgb(51, 51, 255, 0.5)"],
+                            borderColor:['rgb(26, 26, 255)'],
+                            borderWidth:2,
+                            data: chartData2,
+                            yAxisID: 'first-y-axis',
+                            maxBarThickness: 100
+                        }]
+                    },
+                    options: {
+                        tooltips:{
+                            bodyFontSize: 16
+                        },
+                        title:{
+                            display: true,
+                            text: "Daily Statistics: No Ref ID available on Ability and Shahkar Gateway",
+                            fontSize: 18
+                        },
+                        scales: {
+                            yAxes: [{
+                                id: 'first-y-axis',
+                                type: 'linear',
+                                position: 'right',
+                                ticks:{
+                                    beginAtZero: true,
+                                    fontSize: 16
+                                }
+                            }],
+                            xAxes:[
+                                {
+                                    id: 'first-x-axis',
+                                    type: 'category',
+                                    labels: ["D"]
+                                }]
                         }
                     }
                 });
@@ -364,38 +456,29 @@ function getDailyStatsAndDraw(datePickerID , chartID ) {
                     dataType: "json",
                     success: function (data, status, jqXHR) {
                        stats = data;
-
                        lables = [];
-                       label2 = [];
                         $.each(stats , function (k , v) {
-                            // if (k !== "statDate" && k !=='count_EDW_No_RE_ABL')
                             if (k !== "statDate" )
                                 lables.push(k.toString());
-                            // else if(k ==='count_EDW_No_RE_ABL')
-                            //     label2.push(k.toString());
                         });
-
                         chartData = [];
                         chartData2 = [];
                         $.each(stats , function (k , v) {
                             if (k !== "statDate" && k !=='count_EDW_No_RE_ABL') {
-                                // if (k !== "statDate" )
-                                chartData2.push(0);
                                 chartData.push(v);
                             }
                             else if(k ==='count_EDW_No_RE_ABL'){
                                 chartData2.push(v);
                             }
                         });
-
                         console.log("Updating the daily stats graph\nLabels: "+lables+"\nData: "+chartData);
-
-                        // chart.data.labels = lables;
+                        console.log("Updating the daily stats graph\nLabels: "+lables+"\nData2: "+chartData2);
                         chart.data.datasets[0].data = [chartData[0],0,0,0];
                         chart.data.datasets[1].data = [0,chartData[1],0,0];
                         chart.data.datasets[2].data = [0,0,chartData[2],0];
-                        chart.data.datasets[3].data = chartData2;
+                        chart2.data.datasets[0].data = chartData2;
                         chart.update();
+                        chart2.update();
                     },
                     error: function (jqXHR, status) {
                         console.log(status);

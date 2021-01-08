@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class CSVReader {
      * @throws IOException
      */
     public List<ENRSH> read_ENRSH_File(File file , LocalDate uploadDate) throws IOException {
+        logger.info("Got file("+file.getPath()+") to read with date("+uploadDate.format(DateTimeFormatter.ISO_LOCAL_DATE)+")");
         Reader reader = new FileReader(file);
         List<ENRSH> list = new ArrayList<>();
         Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
@@ -44,6 +46,7 @@ public class CSVReader {
     }
 
     public List<ENRE> read_ENRE_File(File file , LocalDate reportDate) throws IOException {
+        logger.info("Got file("+file.getPath()+") to read with date("+reportDate.format(DateTimeFormatter.ISO_LOCAL_DATE)+")");
         Reader reader = new FileReader(file);
         List<ENRE> list = new ArrayList<>();
         Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
@@ -59,6 +62,7 @@ public class CSVReader {
     }
 
     public List<ENRA> read_ENRA_File(File file , LocalDate reportDate) throws IOException {
+        logger.info("Got file("+file.getPath()+") to read with date("+reportDate.format(DateTimeFormatter.ISO_LOCAL_DATE)+")");
         Reader reader = new FileReader(file);
         List<ENRA> list = new ArrayList<>();
         Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
@@ -77,6 +81,7 @@ public class CSVReader {
     }
 
     public List<ENMA> read_ENMA_File(File file , LocalDate reportDate) throws IOException {
+        logger.info("Got file("+file.getPath()+") to read with date("+reportDate.format(DateTimeFormatter.ISO_LOCAL_DATE)+")");
         Reader reader = new FileReader(file);
         List<ENMA> list = new ArrayList<>();
         Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
@@ -89,6 +94,7 @@ public class CSVReader {
     }
 
     public List<EASHD> read_EASHD_File(File file , LocalDate reportDate) throws IOException {
+        logger.info("Got file("+file.getPath()+") to read with date("+reportDate.format(DateTimeFormatter.ISO_LOCAL_DATE)+")");
         Reader reader = new FileReader(file);
         List<EASHD> list = new ArrayList<>();
         Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);

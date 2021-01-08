@@ -43,5 +43,4 @@ public class ServiceEASHD {
     public int countAllBetween(LocalDate start , LocalDate end){
         return repo.countAllByReportDateBetween(start,end);
     }
-
 }

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ public class StatsImpl implements Stats {
     private ServiceENMA enma;
     private ServiceENRA enra;
     private ServiceENRE enre;
+    private ServiceReportLog reportLog ;
 
     @Autowired
     public void setEashd(ServiceEASHD eashd) {
@@ -49,13 +49,20 @@ public class StatsImpl implements Stats {
         this.enrsh = enrsh;
     }
 
+    @Autowired
+    public void setReportLog(ServiceReportLog reportLog) {
+        this.reportLog = reportLog;
+    }
+
     @Override
     public DailyStats getDailyStatsByDate(LocalDate date) {
+//        Date should be -1 to make sense for end user
+        LocalDate reportDate = date.minusDays(1);
         DailyStats dailyStats = new DailyStats();
-        dailyStats.setCount_EDW_ABL_SHWG_DIF(eashd.countAllByReportDate(date));
-        dailyStats.setCount_EDW_No_RE_ABL(enra.countAllByReportDate(date));
-        dailyStats.setCount_EDW_No_RE_SHWG(enrsh.countAllByReportDate(date));
-        dailyStats.setCount_EDW_NO_MSISDN_ABLT_and_EDW_No_RE_ER(enma.countAllByReportDate(date) + enre.countAllByReportDate(date));
+        dailyStats.setCount_EDW_ABL_SHWG_DIF(eashd.countAllByReportDate(reportDate));
+        dailyStats.setCount_EDW_No_RE_ABL(enra.countAllByReportDate(reportDate));
+        dailyStats.setCount_EDW_No_RE_SHWG(enrsh.countAllByReportDate(reportDate));
+        dailyStats.setCount_EDW_NO_MSISDN_ABLT_and_EDW_No_RE_ER(enma.countAllByReportDate(reportDate) + enre.countAllByReportDate(reportDate));
         dailyStats.setStatDate(date);
         return dailyStats;
     }
